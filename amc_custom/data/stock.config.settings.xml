@@ -1,0 +1,16 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record model="stock.config.settings" id="amc_custom.stock_config_settings">
+			<field name="group_stock_multi_warehouses" eval="1"/>
+		</record>
+
+		<function model="stock.config.settings" name="execute">
+			<value eval="[ref('amc_custom.stock_config_settings')]"/>
+			<value eval="{}"/>
+        </function>
+
+    </data>
+</odoo>
+
+ -->

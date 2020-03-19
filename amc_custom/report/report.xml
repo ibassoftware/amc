@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <report 
+            id="account_report_invoice"
+            model="account.invoice"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="amc_custom.report_invoice_new"
+            file="amc_custom.report_invoice_new"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_invoice"
+        />
+
+        <report 
+            id="action_report_delivery"
+            model="stock.picking"
+            string="Delivery Slip"
+            report_type="qweb-pdf"
+            name="amc_custom.report_deliveryslip_new"
+            file="amc_custom.report_deliveryslip_new"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_delivery"
+        />
+
+        <report 
+            id="action_report_delivery_amount"
+            model="stock.picking"
+            string="Delivery Slip With Amount"
+            report_type="qweb-pdf"
+            name="amc_custom.report_deliveryslip_new_amount"
+            file="amc_custom.report_deliveryslip_new_amount"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_delivery"
+        />
+
+        <report 
+            id="action_report_delivery_amount_small"
+            model="stock.picking"
+            string="Delivery Slip With Amount (Small)"
+            report_type="qweb-pdf"
+            name="amc_custom.report_deliveryslip_new_amount_small"
+            file="amc_custom.report_deliveryslip_new_amount_small"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_delivery_small"
+        />
+
+        <report 
+            id="action_report_picklist"
+            model="stock.picking"
+            string="Pick List AMC"
+            report_type="qweb-pdf"
+            name="amc_custom.report_picking_new"
+            file="amc_custom.report_picking_new"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_picking"
+        />
+
+        
+
+    </data>
+</odoo>

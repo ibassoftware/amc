@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reorder_location_user,reorder.location,model_reorder_location,base.group_user,1,1,1,1
+access_return_stock_request_user,return.stock.request,model_return_stock_request,base.group_user,1,1,1,1
+access_return_stock_request_line_user,return.stock.request.line,model_return_stock_request_line,base.group_user,1,1,1,1

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="customer_group_tree_view" model="ir.ui.view">
+			<field name="name">customer.group.tree.view</field>
+			<field name="model">customer.group</field>
+			<field name="arch" type="xml">
+				<tree string="Customer Groups">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="customer_group_form_view" model="ir.ui.view">
+			<field name="name">customer.group.form.view</field>
+			<field name="model">customer.group</field>
+			<field name="arch" type="xml">
+				<form string="Customer Groups">
+					<sheet>
+						<label for="name"/>
+						<h1>
+							<field name="name"/>
+						</h1>
+						<group>
+							<group>
+								<field name="partner_id"/>
+							</group>
+						</group>
+						<group string="Products">
+							<field name="line_ids" nolabel="1">
+								<tree editable="bottom">
+									<field name="product_id"/>
+								</tree>
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="customer_group_action" model="ir.actions.act_window">
+			<field name="name">Customer Group</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">customer.group</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_type">form</field>
+			<!-- <field name="view_id" ref="product_template_kanban_view"/> -->
+			<!-- <field name="context">{"search_default_filter_to_sell":1}</field> -->
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to define a new customer group.
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="product_menu_catalog_customer_group" name="Customer Group" action="amc_custom.customer_group_action" parent="sale.product_menu_catalog" sequence="100" groups="sales_team.group_sale_salesman"/>
+
+
+	</data>
+</odoo>

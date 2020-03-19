@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="view_print_picklist" model="ir.ui.view">
+        <field name="name">Print Picklist</field>
+        <field name="model">print.picklist</field>
+        <field name="arch" type="xml">
+            <form string="Print Picklist">
+                <group>
+                    <!-- <field name="purchase_id" readonly="1" />
+                    <field name="invoice_ids" /> -->
+                    <!-- domain="[('origin','=','purchase_id.name')]" -->
+                    <p>This action will print the pick list report.</p>
+                </group>
+                <footer>
+                    <button name="print" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_print_piclist" model="ir.actions.act_window">
+        <field name="name">Print Picklist</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">print.picklist</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_print_picklist"/>
+        <field name="target">new</field>
+    </record>
+
+    <act_window id="menu_action_print_piclist"
+        multi="True"
+        key2="client_action_multi" name="Print Picklist"
+        res_model="print.picklist" src_model="stock.picking"
+        view_mode="form" target="new" view_type="form"
+    />
+
+</data>
+</odoo>

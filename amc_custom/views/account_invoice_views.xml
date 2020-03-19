@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="invoice_supplier_form_extend" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.extend</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="arch" type="xml">                
+
+                <!-- OVERRIDE TO SHOW ACCOUNT FOR BILLING USERS -->
+                <xpath expr="//notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="groups"></attribute>
+                </xpath>
+
+            </field>
+        </record>
+        
+    </data>
+</odoo>

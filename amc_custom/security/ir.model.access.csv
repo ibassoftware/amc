@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_amc_customer_group_sales,customer.group.sales,model_customer_group,sales_team.group_sale_salesman,1,1,1,1
+access_amc_customer_group_line_sales,customer.group.line.sales,model_customer_group_line,sales_team.group_sale_salesman,1,1,1,1

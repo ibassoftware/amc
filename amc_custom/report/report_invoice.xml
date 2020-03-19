@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="report_invoice_document_new">
+    <t t-call="web.html_container">
+        <!-- <xpath expr="//t[@t-call='web.external_layout']" position="replace"> -->
+        <t t-call="amc_custom.external_layout_invoice">
+            <!-- <div class="page" t-attf-style="background-image:url('/amc_custom/static/img/002.jpg');  no-repeat; background-size: cover;"> -->
+            <div class="page">
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                
+                <div name="invoice_address" invisible="1">
+                </div>
+
+                <div name="reference" invisible="1">
+                </div>
+
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+
+                <table class="table table-condensed" style="font-size: 14px">
+                    <thead>
+                        <tr>
+                            <th width="10%" class="text-right"></th>
+                            <th width="10%" class="text-right"></th>
+                            <th width="70%" class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.invoice_line_ids" t-as="l">
+                            <td class="text-right">
+                                <span t-esc="int(float(l.quantity))"/>
+                                <!-- <span t-field="l.uom_id" groups="product.group_uom"/> -->
+                                <span>PCS</span>
+                            </td>
+                            <td class="text-right"><span t-field="l.product_id.default_code"/></td>
+                            <td class="text-center"><span t-field="l.name"/></td>
+                            <td class="text-right" id="subtotal" invisible="1">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="clearfix">
+                    <div id="total" class="row pull-right">
+                        <div>
+                            <table>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        <!-- </xpath> -->
+        </t>
+    </t>
+</template>
+
+<template id="report_invoice_new">
+    <t t-foreach="docs" t-as="o">
+        <t t-call="amc_custom.report_invoice_document_new" t-lang="o.partner_id.lang"/>
+    </t>
+</template>
+
+</data>
+</odoo>

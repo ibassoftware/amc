@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_sale_order_form_extend" model="ir.ui.view">
+            <field name="name">sale.order.form.extend</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('state', 'not in', ['sent']),('is_allowed_sale_confirm', '!=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('state', 'not in', ['draft']),('is_allowed_sale_confirm', '!=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="inventory_location" />
+                    <field name="is_allowed_sale_confirm" invisible="1" />
+                    <field name="total_delivered_amount" invisible="1" />
+                </xpath>
+
+                 <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="sales_rep_id" />
+                    <field name="sales_manager_id" />
+                    <field name="sales_national_manager_id" />
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="customer_po" />
+                    <field name="customer_group_id" domain="[('partner_id','=',partner_id)]"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                    <field name="latest_inventory" readonly="1"/>
+                    <field name="available_qty" readonly="1"/>
+                    <!-- <field name="delivered_amount" readonly="1" invisible="1"/> -->
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="decoration-danger">product_uom_qty > available_qty and state in ['draft', 'sent']</attribute>
+                </xpath>
+
+                <!-- <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('sale_ok', '=', True),('id', '=', parent.customer_group_line_ids.product_id)]</attribute>
+                </xpath> -->
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="reorder_location_form" model="ir.ui.view">
+        <field name="name">reorder.location.form</field>
+        <field name="model">reorder.location</field>
+        <field name="arch" type="xml">
+            <form string="Reorder Location">
+            <sheet>
+                <group>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="retail_price"/>
+                        <field name="actual_qty"/>
+                        <field name="reorder_qty"/>
+                    </group>
+                    <group>
+                        <field name="location_id"/>
+                        <field name="min_qty"/>
+                        <field name="actual_inventory_value"/>
+                        <field name="reorder_qty_value"/>
+                    </group>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="reorder_location_tree" model="ir.ui.view">
+        <field name="name">reorder.location.tree</field>
+        <field name="model">reorder.location</field>
+        <field name="arch" type="xml">
+            <tree string="Reorder Location" editable="bottom">
+                <field name="location_id"/>
+                <field name="product_id"/>
+                <field name="retail_price"/>
+                <field name="min_qty"/>
+                <field name="actual_qty"/>
+                <field name="actual_inventory_value"/>
+                <field name="reorder_qty"/>
+                <field name="reorder_qty_value"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_reorder_location" model="ir.actions.act_window">
+			<field name="name">Reorder Location</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reorder.location</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem action="action_reorder_location" 
+			id="id_reorder_location" 
+			parent="stock.menu_stock_warehouse_mgmt" 
+			/>
+
+</odoo>

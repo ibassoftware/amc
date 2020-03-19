@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_inherit" model="ir.ui.view">
+        <field name="name">product.template.inherit</field>
+        <field name="model">product.template</field>
+        <field name="priority" eval="8" />
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Fix Unreserved Quantity" type="object" name="button_fix_unreserved_qty"/>
+                <button string="Fix Available Zero" class="btn-danger" type="object" name="button_fix_available_zero" groups="base.group_no_one"/>
+            </xpath>
+            <!-- <xpath expr="//field[@name='company_id']" position="before">
+                <field name="customer_group_ids" />
+            </xpath> -->
+        </field>
+    </record>
+    
+</odoo>
