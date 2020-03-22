@@ -16,7 +16,7 @@
             </header>
             <sheet>
                 <div class="oe_button_box" name="button_box" position="inside">
-                        <button name=""
+                        <button name="action_picking_count"
                             type="object"
                             class="oe_stat_button"
                             icon="fa-cubes" attrs="{'invisible': [('picking_count', '=', 0)]}">
@@ -25,7 +25,7 @@
             </div>
                 <group>
                     <group>
-                        <field name="source_location" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+                        <field name="source_location" domain="[('usage', '=', 'internal')]" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                         <field name="scheduled_pick_up_date" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                     </group>
                     <group>
