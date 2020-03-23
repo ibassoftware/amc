@@ -21,6 +21,21 @@ class ReturnStockRequest(models.Model):
             picking_ids=self.env['stock.picking'].search([('return_request_id','=',line.id)])
             line.picking_count = len(picking_ids)
 
+    @api.multi
+    def action_picking_count(self):
+        model_object = self.env['ir.model.data']
+        picking_ids=self.env['stock.picking'].search([('return_request_id','=',self.id)])
+        dummy, action_id = tuple(model_object.get_object_reference('stock', 'action_picking_tree_all'))
+        [action] = self.env['ir.actions.act_window'].browse(action_id).read()
+        if len(picking_ids) > 0:
+            action['domain'] = [('id', 'in', picking_ids.ids)]
+        elif len(sales_meeting_ids) == 1:
+            action['views'] = [(self.env.ref('stock.view_picking_form').id, 'form')]
+            action['res_id'] = picking_ids.ids[0]
+        else:
+            action = {'type': 'ir.actions.act_window_close'}
+        return action
+
 
     def submit(self):
         self.write({'state':'Submitted'})
