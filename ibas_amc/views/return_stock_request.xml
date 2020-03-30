@@ -31,6 +31,7 @@
                     <group>
                         <field name="date_now" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                          <field name="operation_type_id" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+                         <field name="origin"  attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                     </group>
                     <field name="stock_request_line" nolabel="1" attrs="{'readonly': [('state', '!=', 'Draft')]}">
                         <tree string="Request Line" editable="bottom">
