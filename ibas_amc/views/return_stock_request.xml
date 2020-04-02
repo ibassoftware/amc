@@ -71,6 +71,7 @@
 		<menuitem action="action_return_stock_request" 
 			id="id_return_stock_request" 
 			parent="stock.menu_stock_warehouse_mgmt" 
+            groups="ibas_amc.group_user_for_sales"
 			/>
 
 
