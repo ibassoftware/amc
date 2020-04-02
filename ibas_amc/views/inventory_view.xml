@@ -13,4 +13,11 @@
            </field>
        </record>
 
+       <record id="inv_req_rule" model="ir.rule">
+            <field name="name">inv Request</field>
+            <field ref="stock.model_stock_inventory" name="model_id"/>
+            <field name="domain_force">[('state', 'in', ('draft', 'cancel','confirm'))]</field>
+            <field name="groups" eval="[(4, ref('ibas_amc.group_user_for_sales'))]"/>
+        </record>
+
 </odoo>
