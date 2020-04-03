@@ -13,11 +13,26 @@
            </field>
        </record>
 
-       <record id="inv_req_rule" model="ir.rule">
+        <record id="inv_req_rule" model="ir.rule">
             <field name="name">inv Request</field>
             <field ref="stock.model_stock_inventory" name="model_id"/>
             <field name="domain_force">[('state', 'in', ('draft', 'cancel','confirm'))]</field>
             <field name="groups" eval="[(4, ref('ibas_amc.group_user_for_sales'))]"/>
-        </record>
+        </record> 
+
+        <menuitem name="Inventory" id="stock.menu_stock_root" sequence="30"
+        groups="stock.group_stock_manager,stock.group_stock_user,ibas_amc.group_user_for_sales"
+        web_icon="stock,static/description/icon.png"/>
+
+        <menuitem action="stock.action_inventory_form" 
+        id="stock.menu_action_inventory_form" parent="stock.menu_stock_warehouse_mgmt" sequence="30"
+        groups="ibas_amc.group_user_for_sales,stock.group_stock_user,stock.group_stock_manager"
+        />
+
+       <menuitem id="stock.all_picking" name="Transfers" parent="stock.menu_stock_warehouse_mgmt" sequence="5" 
+       action="stock.action_picking_tree_all" groups="-ibas_amc.group_user_for_sales,stock.group_stock_manager,stock.group_stock_user"/>
+
+       <menuitem action="stock.action_procurement_compute" id="stock.menu_procurement_compute" 
+       parent="stock.menu_stock_warehouse_mgmt" sequence="135" groups="-ibas_amc.group_user_for_sales,stock.group_stock_user"/>
 
 </odoo>
