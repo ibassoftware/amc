@@ -10,6 +10,10 @@
                 <xpath expr="//field[@name='line_ids']/tree/field[@name='theoretical_qty']" position="replace">
                     <field name="theoretical_qty"  groups="ibas_amc.group_blind_counter"/>
                 </xpath>
+                <xpath expr="//button[@name='action_start']" position="replace">
+                    <button name="action_start" states="draft" string="Start Inventory" 
+                    type="object" class="oe_highlight" groups="stock.group_stock_user,ibas_amc.group_user_for_sales"/>
+                </xpath>
            </field>
        </record>
 
