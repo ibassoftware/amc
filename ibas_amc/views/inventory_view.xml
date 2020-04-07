@@ -24,6 +24,13 @@
             <field name="groups" eval="[(4, ref('ibas_amc.group_user_for_sales'))]"/>
         </record> 
 
+        <menuitem
+            action="stock.stock_picking_type_action"
+            id="stock.stock_picking_type_menu"
+            parent="stock.menu_stock_root" sequence="0"
+            groups="stock.group_stock_manager,stock.group_stock_user,-ibas_amc.group_user_for_sales"
+            name="Dashboard"/>
+
         <menuitem name="Inventory" id="stock.menu_stock_root" sequence="30"
         groups="stock.group_stock_manager,stock.group_stock_user,ibas_amc.group_user_for_sales"
         web_icon="stock,static/description/icon.png"/>
