@@ -5,11 +5,15 @@ class ReturnStockRequest(models.Model):
     _name = 'return.stock.request'
     _description = "Return Stock Request"
 
+    @api.model
+    def _get_ope_type_id(self):
+        return self.env.ref('stock.stock_location_stock').id
+
     date_now = fields.Date('Date', default=fields.Datetime.now,)
     state  = fields.Selection([('Draft','Draft'),('Submitted','Submitted'),('Done','Done')],string="State",default="Draft")
     scheduled_pick_up_date = fields.Date('Scheduled Pick Up Date')
     source_location = fields.Many2one('stock.location','Source Location')
-    operation_type_id = fields.Many2one('stock.picking.type','Picking Type')
+    operation_type_id = fields.Many2one('stock.picking.type','Picking Type', default=_get_ope_type_id)
     stock_request_line = fields.One2many('return.stock.request.line','reten_req_id','Line')
     picking_count = fields.Integer(
         string='Number of Picking',
