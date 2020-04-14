@@ -1,25 +1,36 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
-
+HTML_INSTRUCTIONS = '<p><b><font style="font-size: 14px;">This form is for requesting pull-outs from branches. Please see further instructions below:</font></b><ol><li><p><font style="font-size: 14px;">For Source Location, choose the store/branch that is requesting the pull-out.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li></ol></p>'
 class ReturnStockRequest(models.Model):
     _name = 'return.stock.request'
     _description = "Return Stock Request"
 
     @api.model
     def _get_ope_type_id(self):
-        return self.env.ref('stock.stock_location_stock').id
+        return self.env.ref('stock.picking_type_internal', False)
+
+    @api.model
+    def _get_instructions(self):
+        return HTML_INSTRUCTIONS
 
     date_now = fields.Date('Date', default=fields.Datetime.now,)
     state  = fields.Selection([('Draft','Draft'),('Submitted','Submitted'),('Done','Done')],string="State",default="Draft")
     scheduled_pick_up_date = fields.Date('Scheduled Pick Up Date')
     source_location = fields.Many2one('stock.location','Source Location')
-    operation_type_id = fields.Many2one('stock.picking.type','Picking Type', default=_get_ope_type_id)
+    operation_type_id = fields.Many2one('stock.picking.type',string='Picking Type', default=_get_ope_type_id)
     stock_request_line = fields.One2many('return.stock.request.line','reten_req_id','Line')
     picking_count = fields.Integer(
         string='Number of Picking',
         compute='_compute_picking_count',
     )
     origin = fields.Char(string='RS #')
+
+    instructions = fields.Text(string='Instructions', compute= '_compute_get_instructions')
+
+    @api.multi
+    def _compute_get_instructions(self):
+        for rec in self:
+            rec.instructions = HTML_INSTRUCTIONS
 
     @api.multi
     def _compute_picking_count(self):

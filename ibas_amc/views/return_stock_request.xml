@@ -22,7 +22,7 @@
                             icon="fa-cubes" attrs="{'invisible': [('picking_count', '=', 0)]}">
                             <field name="picking_count" widget="statinfo" string="Picking"/>
                         </button>
-            </div>
+                </div>
                 <group>
                     <group>
                         <field name="source_location" domain="[('usage', '=', 'customer')]" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
@@ -43,6 +43,11 @@
                                 <field name="dest_location"/>
                             </tree>
                     </field>
+                </group>
+                <group string= "Instructions">
+                    <group>
+                        <field name="instructions" nolabel="1" widget="html" readonly="1"/>
+                    </group>
                 </group>
             </sheet>
             </form>
