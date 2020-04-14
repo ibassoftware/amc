@@ -25,7 +25,7 @@
             </div>
                 <group>
                     <group>
-                        <field name="source_location" domain="[('usage', '=', 'internal')]" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+                        <field name="source_location" domain="[('usage', '=', 'customer')]" required="1" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                         <field name="scheduled_pick_up_date" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
                     </group>
                     <group>
