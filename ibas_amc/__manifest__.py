@@ -22,9 +22,9 @@
     'depends': ['stock','sale','account'],
 
     # always loaded
-    'data': [
+    'data': [         
+         'security/security_view.xml',
          'security/ir.model.access.csv',
-          'security/security_view.xml',
          'views/inventory_view.xml',
          'views/reorder_location_view.xml',
          'views/return_stock_request.xml',
