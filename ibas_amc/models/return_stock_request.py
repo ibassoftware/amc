@@ -14,7 +14,7 @@ class ReturnStockRequest(models.Model):
         string='Number of Picking',
         compute='_compute_picking_count',
     )
-    origin = fields.Char('Origin')
+    origin = fields.Char(string='RS #')
 
     @api.multi
     def _compute_picking_count(self):
