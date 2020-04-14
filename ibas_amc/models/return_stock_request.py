@@ -97,4 +97,7 @@ class ReturnStockRequestLine(models.Model):
         elif self.item_status == 'Scrapped':
             self.dest_location = self.env.ref('stock.stock_location_scrapped').id #self.env['stock.location'].search([('item_status','=','Scrapped')]).id
         else:
-            self.dest_location = self.env['stock.location'].search([('item_status','=','Good')]).id
+            location_id = self.env['stock.location'].search([('item_status','=','Good')]).id
+            if self.reten_req_id.operation_type_id.default_location_dest_id:
+                location_id = self.reten_req_id.operation_type_id.default_location_dest_id.id
+            self.dest_location =  location_id #self.env['stock.location'].search([('item_status','=','Good')]).id
