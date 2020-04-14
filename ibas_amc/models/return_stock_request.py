@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError, AccessError
 
 class ReturnStockRequest(models.Model):
     _name = 'return.stock.request'
@@ -85,6 +86,8 @@ class ReturnStockRequestLine(models.Model):
 
     @api.onchange('product_id','item_status','qty')
     def product_onchange(self):
+        if not self.reten_req_id.operation_type_id:
+            raise UserError(_('Select first a Picking Type before adding an Item to Return.'))
         self.unit_price = self.product_id.list_price
         self.amount = self.qty * self.unit_price
         if self.item_status == 'Slightly_Damaged':
@@ -92,6 +95,6 @@ class ReturnStockRequestLine(models.Model):
         elif self.item_status == 'Damaged':
             self.dest_location = self.env['stock.location'].search([('item_status','=','Damaged')]).id 
         elif self.item_status == 'Scrapped':
-            self.dest_location = self.env['stock.location'].search([('item_status','=','Scrapped')]).id
+            self.dest_location = self.env.ref('stock.stock_location_scrapped').id #self.env['stock.location'].search([('item_status','=','Scrapped')]).id
         else:
             self.dest_location = self.env['stock.location'].search([('item_status','=','Good')]).id
