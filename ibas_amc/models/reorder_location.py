@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
+from odoo.exceptions import UserError, AccessError
+
 class ReorderLocation(models.Model):
     _name = 'reorder.location'
     _description = "Reorder Location"
