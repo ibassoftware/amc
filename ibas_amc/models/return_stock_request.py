@@ -7,7 +7,6 @@ class ReturnStockRequest(models.Model):
 
     @api.model
     def _get_ope_type_id(self):
-        raise Warning(self.env.ref('stock.stock_location_stock').id)
         return self.env.ref('stock.stock_location_stock').id
 
     date_now = fields.Date('Date', default=fields.Datetime.now,)
