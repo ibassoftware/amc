@@ -25,7 +25,7 @@ class ReturnStockRequest(models.Model):
     )
     origin = fields.Char(string='RS #')
 
-    instructions = fields.Text(string='Instructions', compute= '_compute_get_instructions')
+    instructions = fields.Text(string='Instructions', compute= '_compute_get_instructions', default=_get_instructions)
 
     @api.multi
     def _compute_get_instructions(self):
