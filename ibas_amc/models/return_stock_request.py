@@ -1,20 +1,36 @@
 from odoo import api, fields, models, _
-
+from odoo.exceptions import UserError, AccessError
+HTML_INSTRUCTIONS = '<p><b><font style="font-size: 14px;">This form is for requesting pull-outs from branches. Please see further instructions below:</font></b><ol><li><p><font style="font-size: 14px;">For Source Location, choose the store/branch that is requesting the pull-out.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li></ol></p>'
 class ReturnStockRequest(models.Model):
     _name = 'return.stock.request'
     _description = "Return Stock Request"
+
+    @api.model
+    def _get_ope_type_id(self):
+        return self.env.ref('stock.picking_type_internal', False)
+
+    @api.model
+    def _get_instructions(self):
+        return HTML_INSTRUCTIONS
 
     date_now = fields.Date('Date', default=fields.Datetime.now,)
     state  = fields.Selection([('Draft','Draft'),('Submitted','Submitted'),('Done','Done')],string="State",default="Draft")
     scheduled_pick_up_date = fields.Date('Scheduled Pick Up Date')
     source_location = fields.Many2one('stock.location','Source Location')
-    operation_type_id = fields.Many2one('stock.picking.type','Picking Type')
+    operation_type_id = fields.Many2one('stock.picking.type',string='Picking Type', default=_get_ope_type_id)
     stock_request_line = fields.One2many('return.stock.request.line','reten_req_id','Line')
     picking_count = fields.Integer(
         string='Number of Picking',
         compute='_compute_picking_count',
     )
-    origin = fields.Char('Origin')
+    origin = fields.Char(string='RS #')
+
+    instructions = fields.Text(string='Instructions', compute= '_compute_get_instructions')
+
+    @api.multi
+    def _compute_get_instructions(self):
+        for rec in self:
+            rec.instructions = HTML_INSTRUCTIONS
 
     @api.multi
     def _compute_picking_count(self):
@@ -85,6 +101,8 @@ class ReturnStockRequestLine(models.Model):
 
     @api.onchange('product_id','item_status','qty')
     def product_onchange(self):
+        if not self.reten_req_id.operation_type_id:
+            raise UserError(_('Select first a Picking Type before adding an Item to Return.'))
         self.unit_price = self.product_id.list_price
         self.amount = self.qty * self.unit_price
         if self.item_status == 'Slightly_Damaged':
@@ -92,6 +110,9 @@ class ReturnStockRequestLine(models.Model):
         elif self.item_status == 'Damaged':
             self.dest_location = self.env['stock.location'].search([('item_status','=','Damaged')]).id 
         elif self.item_status == 'Scrapped':
-            self.dest_location = self.env['stock.location'].search([('item_status','=','Scrapped')]).id
+            self.dest_location = self.env.ref('stock.stock_location_scrapped').id #self.env['stock.location'].search([('item_status','=','Scrapped')]).id
         else:
-            self.dest_location = self.env['stock.location'].search([('item_status','=','Good')]).id
+            location_id = self.env['stock.location'].search([('item_status','=','Good')]).id
+            if self.reten_req_id.operation_type_id.default_location_dest_id:
+                location_id = self.reten_req_id.operation_type_id.default_location_dest_id.id
+            self.dest_location =  location_id #self.env['stock.location'].search([('item_status','=','Good')]).id
