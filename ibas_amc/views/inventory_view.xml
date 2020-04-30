@@ -2,7 +2,7 @@
 <odoo>
 
 
-    <record id="stock_inventory_ibas_view_form" model="ir.ui.view">
+        <record id="stock_inventory_ibas_view_form" model="ir.ui.view">
            <field name="name">stock.inventory.view.form</field>
            <field name="model">stock.inventory</field>
            <field name="inherit_id" ref="stock.view_inventory_form"/>
@@ -14,8 +14,33 @@
                     <button name="action_start" states="draft" string="Start Inventory" 
                     type="object" class="oe_highlight" groups="stock.group_stock_user,ibas_amc.group_user_for_sales"/>
                 </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='theoretical_qty']" position="after">
+                    <field name="theoretical_qty_cost"  groups="ibas_amc.group_blind_counter"/>
+                </xpath>
+
            </field>
        </record>
+
+
+        <record id="stock_inventory_ibas_view_tree" model="ir.ui.view">
+           <field name="name">stock.inventory.ibas.view.tree</field>
+           <field name="model">stock.inventory</field>
+           <field name="inherit_id" ref="stock.view_inventory_tree"/>
+           <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="view_record"  invisible="1"/>
+                </xpath>
+
+           </field>
+       </record>
+
+
+        <record id="stock.action_inventory_form" model="ir.actions.act_window">
+            <field name="domain">[('view_record','=', True)]</field>
+		</record>       
+
+
 
         <record id="inv_req_rule" model="ir.rule">
             <field name="name">inv Request</field>
