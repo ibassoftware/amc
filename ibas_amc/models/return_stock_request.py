@@ -1,6 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
+
 HTML_INSTRUCTIONS = '<p><b><font style="font-size: 14px;">This form is for requesting pull-outs from branches. Please see further instructions below:</font></b><ol><li><p><font style="font-size: 14px;">For Source Location, choose the store/branch that is requesting the pull-out.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li><li><p><font style="font-size: 14px;">For Scheduled Pick Up Date, please make sure the products are ready for pull-out by then. This means the documents should be prepared and the products should be packed.&nbsp;</font></p></li></ol></p>'
+
 class ReturnStockRequest(models.Model):
     _name = 'return.stock.request'
     _description = "Return Stock Request"
@@ -26,6 +28,78 @@ class ReturnStockRequest(models.Model):
     origin = fields.Char(string='RS #')
 
     instructions = fields.Text(string='Instructions', compute= '_compute_get_instructions', default=_get_instructions)
+
+    view_record = fields.Boolean(string="Allow to View", compute='_compute_allow_to_view', search="_search_allow_to_view")
+
+    @api.multi
+    def _search_allow_to_view(self, operator, value):
+        hr_employee_model = self.env['hr.employee']
+        stock_user = self.env.ref('stock.group_stock_user').id
+        stock_manager = self.env.ref('stock.group_stock_manager').id
+        ids_need = []
+        for rec in self.search([]):
+            if self.env.ref('sales_team.group_sale_manager').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    ids_need.append(rec.id)
+                else:
+                    #Get the Employee ID of the Created User
+                    hr_employee_obj = hr_employee_model.search([('user_id','=', rec.create_uid.id)])
+                    #Get the Employee ID of the Sales Manager
+                    hr_man_employee_obj = hr_employee_model.search([('user_id','=', self.env.user.id)])
+
+                    if hr_employee_obj:
+                        if hr_employee_obj.parent_id:
+                            if hr_employee_obj.parent_id.id == hr_man_employee_obj.id:
+                                ids_need.append(rec.id)
+
+            elif self.env.ref('sales_team.group_sale_salesman').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    ids_need.append(rec.id)
+
+            elif self.env.ref('sales_team.group_sale_salesman_all_leads').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    ids_need.append(rec.id)
+
+            if stock_user in self.env.user.groups_id.ids or stock_manager in self.env.user.groups_id.ids:
+                ids_need.append(rec.id)        
+        return [('id', 'in', ids_need)]
+
+
+    @api.multi
+    def _compute_allow_to_view(self):
+        hr_employee_model = self.env['hr.employee']
+        stock_user = self.env.ref('stock.group_stock_user').id
+        stock_manager = self.env.ref('stock.group_stock_manager').id
+
+        for rec in self:
+            rec.view_record = False
+            if self.env.ref('sales_team.group_sale_manager').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    rec.view_record = True
+                else:
+                    #Get the Employee ID of the Created User
+                    hr_employee_obj = hr_employee_model.search([('user_id','=', rec.create_uid.id)])
+                    #Get the Employee ID of the Sales Manager
+                    hr_man_employee_obj = hr_employee_model.search([('user_id','=', self.env.user.id)])
+
+                    if hr_employee_obj:
+                        if hr_employee_obj.parent_id:
+                            if hr_employee_obj.parent_id.id == hr_man_employee_obj.id:
+                                rec.view_record = True
+
+            elif self.env.ref('sales_team.group_sale_salesman').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    rec.view_record = True
+                else:
+                    rec.view_record = False
+            elif self.env.ref('sales_team.group_sale_salesman_all_leads').id in self.env.user.groups_id.ids:
+                if rec.create_uid.id == self.env.user.id:
+                    rec.view_record = True
+                else:
+                    rec.view_record = False
+            
+            if stock_user in self.env.user.groups_id.ids or stock_manager in self.env.user.groups_id.ids:
+                rec.view_record = True
 
     @api.multi
     def _compute_get_instructions(self):
@@ -56,14 +130,18 @@ class ReturnStockRequest(models.Model):
 
     def submit(self):
         self.write({'state':'Submitted'})
+        
         if self.stock_request_line:
             for line in self.stock_request_line:
+                
                 picking_id = self.env['stock.picking'].create({
                         'picking_type_id': self.operation_type_id.id,
                         'location_id': self.source_location.id,
                         'location_dest_id': line.dest_location.id,
-                        'return_request_id':self.id
+                        'return_request_id':self.id,
+                        
                     })
+                picking_id.write({'scheduled_date': self.scheduled_pick_up_date})
                 self.env['stock.move'].create({
                             'product_id': line.product_id.id,
                             'name': line.product_id.name,
@@ -85,10 +163,17 @@ class ReturnStockRequest(models.Model):
             picking_id.button_validate()
 
 
-
 class ReturnStockRequestLine(models.Model):
     _name = 'return.stock.request.line'
     _description = "Return Stock Request Line"
+
+
+    @api.model
+    def _filter_by_selLoc(self):
+        OL_STOCK = self.env.ref('__export__.stock_location_10949_5cdad591').id
+        WH_STOCK = self.env.ref('stock.stock_location_stock').id
+        SLGHT_DMG = self.env.ref('__export__.stock_location_10901_8ec8f698').id
+        return [('id', 'in', [OL_STOCK, WH_STOCK, SLGHT_DMG])]
 
     product_id = fields.Many2one('product.product','Product')
     reten_req_id = fields.Many2one('return.stock.request','Retrn Req ID')
@@ -97,7 +182,7 @@ class ReturnStockRequestLine(models.Model):
     qty = fields.Float('Quantity')
     unit_price = fields.Float('Unit Price')
     amount = fields.Float('Amount')
-    dest_location = fields.Many2one('stock.location','Destination Location')
+    dest_location = fields.Many2one('stock.location','Destination Location', domain=_filter_by_selLoc)
 
     @api.onchange('product_id','item_status','qty')
     def product_onchange(self):
