@@ -53,6 +53,7 @@
 		<menuitem action="action_reorder_location" 
 			id="id_reorder_location" 
 			parent="stock.menu_stock_warehouse_mgmt" 
+            groups="stock.group_stock_user"
 			/>
 
 </odoo>
