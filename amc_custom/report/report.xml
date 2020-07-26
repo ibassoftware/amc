@@ -57,6 +57,17 @@
             paperformat="amc_custom.paperformat_report_amc_picking"
         />
 
+        <report 
+            id="action_report_picklist_deliveryslip_deliver_amount"
+            model="stock.picking"
+            string="Delivery Slip with Delivered Amount"
+            report_type="qweb-pdf"
+            name="amc_custom.report_deliveryslip_deliver_amount_view"
+            file="amc_custom.report_deliveryslip_deliver_amount_view"
+            attachment_use="False"
+            paperformat="amc_custom.paperformat_report_amc_picking"
+        />
+
         
 
     </data>

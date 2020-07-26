@@ -45,6 +45,7 @@
         'report/report_invoice.xml',
         'report/report_deliveryslip.xml',
         'report/report_picklist.xml',
+        'report/report_deliveryslip_deliver_amount.xml',
         'report/report.xml',
     ],
     # only loaded in demonstration mode
