@@ -19,17 +19,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock','sale','account'],
+    'depends': ['stock', 'sale', 'account'],
 
     # always loaded
-    'data': [         
-         'security/security_view.xml',
-         'security/ir.model.access.csv',
-         'views/inventory_view.xml',
-         'views/reorder_location_view.xml',
-         'views/return_stock_request.xml',
-         'views/stock_location.xml',
-         'views/account_invoice_view.xml'
+    'data': [
+        'security/security_view.xml',
+        'security/ir.model.access.csv',
+        'views/inventory_view.xml',
+        'views/reorder_location_view.xml',
+        # 'views/return_stock_request.xml',
+        'views/stock_location.xml',
+        'views/account_invoice_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

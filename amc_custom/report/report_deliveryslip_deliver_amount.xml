@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="report_deliveryslip_deliver_amount">
+    <!-- <xpath expr="//t[@t-call='web.external_layout']" position="replace"> -->
+    <t t-call="web.html_container">
+        <t t-call="amc_custom.external_layout_deliver_amount">
+            <!-- <div class="page" t-attf-style="background-image:url('/amc_custom/static/img/002.jpg');  no-repeat; background-size: cover;"> -->
+            <div class="page">
+                <table class="table table-condensed" style="font-size: 14px;">
+                    <thead>
+                        <tr>
+                            <th width="10%">QTY</th>
+                            <th width="10%">Item Code</th>
+                            <th width="10%" class="text-right">Regular Price</th>
+                            <th width="10%" class="text-right">Promo Price</th>
+                            <th width="10%" class="text-right">ODR#</th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.move_lines" t-as="move">
+                            <td style="border-top: 1px solid black;">
+                                <span t-esc="int(float(move.quantity_done))"/>
+                                <span t-field="move.product_uom"/>
+                            </td>
+                            <td style="border-top: 1px solid black;"><span t-field="move.product_id.default_code"/></td>
+                            <td class="text-right" style="border-top: 1px solid black;"><span t-field="move.product_id.lst_price"/></td>
+                            <td class="text-right" style="border-top: 1px solid black;"><span t-field="move.sale_line_id.price_reduce"/></td>
+                            <td class="text-right" style="border-top: 1px solid black;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        <!-- </xpath> -->
+        </t>
+    <!-- </xpath> -->
+    </t>
+</template>
+
+<template id="report_deliveryslip_deliver_amount_view">
+    <t t-foreach="docs" t-as="o">
+        <t t-call="amc_custom.report_deliveryslip_deliver_amount" t-lang="o.partner_id.lang"/>
+    </t>
+</template>
+
+</data>
+</odoo>
