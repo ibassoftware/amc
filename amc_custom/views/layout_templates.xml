@@ -472,7 +472,12 @@
                 <t t-set="total_qty" t-value="0"/>
                 <t t-set="total_delivered_amount" t-value="0"/>
                 <t t-foreach="o.move_lines" t-as="move">
-                    <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.product_id.lst_price)"/>
+                    <t t-if="move.sale_line_id.price_reduce &gt; 0">
+                        <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.sale_line_id.price_reduce)"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.product_id.lst_price)"/>
+                    </t>
                     <t t-set="total_qty" t-value="total_qty + move.quantity_done"/>
                 </t>
 
