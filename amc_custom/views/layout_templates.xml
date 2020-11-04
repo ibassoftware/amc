@@ -472,7 +472,12 @@
                 <t t-set="total_qty" t-value="0"/>
                 <t t-set="total_delivered_amount" t-value="0"/>
                 <t t-foreach="o.move_lines" t-as="move">
-                    <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.product_id.lst_price)"/>
+                    <t t-if="move.sale_line_id.price_reduce &gt; 0">
+                        <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.sale_line_id.price_reduce)"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="total_delivered_amount" t-value="total_delivered_amount + (move.quantity_done * move.product_id.lst_price)"/>
+                    </t>
                     <t t-set="total_qty" t-value="total_qty + move.quantity_done"/>
                 </t>
 
@@ -524,7 +529,8 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <p><b>Delivered Amount: </b>
-                        <span t-esc="int(total_delivered_amount)"/>
+                        <span t-esc="total_delivered_amount" t-esc-options='{"widget": "monetary", "display_currency": "o.partner_id.currency_id"}'/>
+                        <!--<t t-esc="'{:,.2f}'.format(total_delivered_amount)"/> -->
                        <!-- <t t-if="o.sale_id">
                             <span t-field="o.sale_id.amount_total"/>
                         <t t-if="o.purchase_id">
