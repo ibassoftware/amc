@@ -19,7 +19,7 @@ class ReturnStockRequest(models.Model):
     date_now = fields.Date('Date', default=fields.Datetime.now,)
     state = fields.Selection([('Draft', 'Draft'), ('Submitted', 'Submitted'),
                               ('Done', 'Done')], string="State", default="Draft")
-    scheduled_pick_up_date = fields.Date('Scheduled Pick Up Date')
+    scheduled_pick_up_date = fields.Date('Scheduled Pick Up Date', required=True)
     source_location = fields.Many2one('stock.location', 'Source Location')
     operation_type_id = fields.Many2one(
         'stock.picking.type', string='Picking Type', default=_get_ope_type_id)
@@ -140,32 +140,48 @@ class ReturnStockRequest(models.Model):
             action = {'type': 'ir.actions.act_window_close'}
         return action
 
+
+
     def submit(self):
-        self.write({'state': 'Submitted'})
 
-        if self.stock_request_line:
-            for line in self.stock_request_line:
+        for rec in self:
 
-                picking_id = self.env['stock.picking'].create({
-                    'picking_type_id': self.operation_type_id.id,
-                    'location_id': self.source_location.id,
-                    'location_dest_id': line.dest_location.id,
-                    'return_request_id': self.id,
-                    'assigned_odr': self.origin
+            rec.write({'state': 'Submitted'})
 
-                })
-                picking_id.write(
-                    {'scheduled_date': self.scheduled_pick_up_date})
-                self.env['stock.move'].create({
-                    'product_id': line.product_id.id,
-                    'name': line.product_id.name,
-                    'product_uom': line.product_id.uom_id.id,
-                    'product_uom_qty': line.qty,
-                    'quantity_done': line.qty,
-                    'picking_id': picking_id.id,
-                    'location_id': self.source_location.id,
-                    'location_dest_id': line.dest_location.id
-                })
+            if rec.stock_request_line:
+
+                destlocsall = []
+                for line in rec.stock_request_line:
+                    destlocsall.append(line.dest_location)
+
+                destlocs = set(destlocsall)
+                for destloc in destlocs:
+
+                    # mydest = self.env['stock.location'].search([('id', '=', destloc)])[0]
+
+                    picking_id = self.env['stock.picking'].create({
+                            'picking_type_id': rec.operation_type_id.id,
+                            'location_id': rec.source_location.id,
+                            'location_dest_id': destloc.id,
+                            'return_request_id': rec.id,
+                            'assigned_odr': rec.origin
+
+                        })
+                    
+                    for line in rec.stock_request_line:
+
+                        if line.dest_location == destloc:                       
+                            picking_id.write({'scheduled_date': rec.scheduled_pick_up_date})
+                            rec.env['stock.move'].create({
+                                'product_id': line.product_id.id,
+                                'name': line.product_id.name,
+                                'product_uom': line.product_id.uom_id.id,
+                                'product_uom_qty': line.qty,
+                                'quantity_done': line.qty,
+                                'picking_id': picking_id.id,
+                                'location_id': rec.source_location.id,
+                                'location_dest_id': destloc.id
+                            })
 
     def done(self):
         self.write({'state': 'Done'})
