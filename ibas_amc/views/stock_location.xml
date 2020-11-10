@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<record id="stock_location_ibas_view_form" model="ir.ui.view">
-           <field name="name">stock.location.view.form</field>
-           <field name="model">stock.location</field>
-           <field name="inherit_id" ref="stock.view_location_form"/>
-           <field name="arch" type="xml">
+  <record id="stock_location_ibas_view_form" model="ir.ui.view">
+    <field name="name">stock.location.view.form</field>
+    <field name="model">stock.location</field>
+    <field name="inherit_id" ref="stock.view_location_form"/>
+    <field name="arch" type="xml">
 
-              <xpath expr="//field[@name='return_location']" position="after">
-                <field name="item_status"  />
-              </xpath>
-           </field>
-       </record>
+      <xpath expr="//field[@name='return_location']" position="after">
+        <field name="is_amc_return_stock_location" />
+      </xpath>
+    </field>
+  </record>
 
 </odoo>
