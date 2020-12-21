@@ -29,7 +29,6 @@ class ReturnStockRequest(models.Model):
         string='Number of Picking',
         compute='_compute_picking_count',
     )
-    company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.user.company_id)
     origin = fields.Char(string='RS #', required=True)
 
     instructions = fields.Text(

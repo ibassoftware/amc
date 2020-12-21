@@ -3,7 +3,7 @@
     <template id="report_return_stock">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout">
+                <t t-call="web.internal_layout">
                     <style>
                         table.table-list, .table-list th, .table-list td {
                             border: 1px solid black;
@@ -16,10 +16,19 @@
                         .page {
                             font-family: calibri;
                         }
+                        .oe_ml32 {
+                            margin-left: 32px !important;
+                        }
+                        .oe_mr16 {
+                            margin-right: 16px !important;
+                        }
+                        .oe_pt16 {
+                            margin-top: 16px !important;
+                        }
                     </style>
                     <div class="page">
-                        <div class="text-center" style="font-weight:bold;">
-                            <span style="font-size: 4rem;"><t t-esc="doc.company_id.name"/></span><br/>
+                        <div style="font-weight:bold;text-align:center">
+                            <span style="font-size: 4rem;"><t t-esc="company_name"/></span><br/>
                             <span style="font-size: 2rem;">MANUFACTURER*IMPORTER*EXPORTER</span><br/>
                             <span style="font-size: 1.7rem;">UNIT 101 LYH BULDING NO.3 JOSE ABAD SANTOS ST. LITTLE BAGUIO, SAN JUAN CITY</span><br/>
                             <span style="font-size: 1.7rem;">TEL. NO. 369-3023,369-3017</span>
@@ -42,7 +51,7 @@
                         </p>
                         <table class="table-list" style="width:90%; margin:auto;">
                             <thead>
-                                <tr class="text-center">
+                                <tr>
                                     <th>ITEM ID</th>
                                     <th>QUANTITY</th>
                                     <th>UNIT PRICE</th>
@@ -68,13 +77,13 @@
                             </tbody>
                         </table>
                         <div style="margin:auto; margin-top:1rem; width:90%">
-                            <p class="ml32" style="font-size: 110%">The following persons are given authority to pull-out:</p>
+                            <p class="oe_ml32" style="font-size: 110%">The following persons are given authority to pull-out:</p>
                             <table>
                                 <tr width="30%">
-                                    <td><p class="ml32 mr16">Name:</p></td>
+                                    <td><p class="oe_ml32 oe_mr16">Name:</p></td>
                                     <td><p>_________________________</p></td>
                                     <td width="20%"><p></p></td>
-                                    <td><p class="mr16">Signature:</p></td>
+                                    <td><p class="oe_mr16">Signature:</p></td>
                                     <td><p>_________________________</p></td>
                                 </tr>
                                 <tr>
@@ -90,22 +99,22 @@
                         <table style="width:90%; margin:auto; margin-top:1rem">
                             <tbody>
                                 <tr>
-                                    <td><p class="ml32">Requested By:</p></td>
-                                    <td><p class="ml32">Endorsed by:</p></td>
-                                    <td><p class="ml32">Issued by:</p></td>
+                                    <td><p class="oe_ml32">Requested By:</p></td>
+                                    <td><p class="oe_ml32">Endorsed by:</p></td>
+                                    <td><p class="oe_ml32">Issued by:</p></td>
                                 </tr>
-                                <tr class="text-center">
+                                <tr style="text-align: center;">
                                     <td>_________________________<br/>Store Consignor</td>
                                     <td>_________________________<br/>SC Manager</td>
                                     <td>_________________________<br/>SC Demo Personnel</td>
                                 </tr>
                                 <tr><td>&amp;nbsp;</td></tr>
                                 <tr>
-                                    <td><p class="pt16 ml32">Noted By:</p></td>
-                                    <td><p class="pt16 ml32">Check by:</p></td>
-                                    <td><p class="pt16 ml32">Received by:</p></td>
+                                    <td><p class="oe_pt16 oe_ml32">Noted By:</p></td>
+                                    <td><p class="oe_pt16 oe_ml32">Check by:</p></td>
+                                    <td><p class="oe_pt16 oe_ml32">Received by:</p></td>
                                 </tr>
-                                <tr class="text-center">
+                                <tr style="text-align: center;">
                                     <td>_________________________<br/>Dept. Manager</td>
                                     <td>_________________________<br/>RDU Supervisor</td>
                                     <td>_________________________<br/>SC Representative</td>
@@ -115,6 +124,18 @@
                     </div>
                 </t>
             </t>
+        </t>
+    </template>
+
+    <template id="report_return_stock_amc">
+        <t t-call="ibas_return_stock_report.report_return_stock">
+            <t t-set="company_name" t-value="'ANNAIAH MARKETING CORPORATION'"/>
+        </t>
+    </template>
+
+    <template id="report_return_stock_cmc">
+        <t t-call="ibas_return_stock_report.report_return_stock">
+            <t t-set="company_name" t-value="'CALEYAN MARKETING CORPORATION'"/>
         </t>
     </template>
 
