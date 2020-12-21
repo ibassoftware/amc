@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="return_stock_report"
+            model="return.stock.request"
+            string="Return Stock Report"
+            report_type="qweb-pdf"
+            name="ibas_return_stock_report.report_return_stock"
+            file="ibas_return_stock_report.report_return_stock"
+            attachment_use="True"
+        />
+    </data>
+</odoo>
