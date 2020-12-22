@@ -30,7 +30,7 @@
                         <div style="font-weight:bold;text-align:center">
                             <span style="font-size: 4rem;"><t t-esc="company_name"/></span><br/>
                             <span style="font-size: 2rem;">MANUFACTURER*IMPORTER*EXPORTER</span><br/>
-                            <span style="font-size: 1.7rem;">UNIT 101 LYH BULDING NO.3 JOSE ABAD SANTOS ST. LITTLE BAGUIO, SAN JUAN CITY</span><br/>
+                            <span style="font-size: 1.7rem;">UNIT 101 LYH BUILDING NO.3 JOSE ABAD SANTOS ST. LITTLE BAGUIO, SAN JUAN CITY</span><br/>
                             <span style="font-size: 1.7rem;">TEL. NO. 369-3023,369-3017</span>
                         </div>
                         <table class="oe_mt4 table-info" style="margin-left:8rem; width:90%">
