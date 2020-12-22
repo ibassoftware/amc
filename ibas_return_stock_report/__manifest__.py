@@ -8,7 +8,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['ibas_amc'],
+    'depends': ['ibas_amc', 'hr'],
 
     'data': [
         'report/report.xml',

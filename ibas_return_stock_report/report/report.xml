@@ -2,12 +2,22 @@
 <odoo>
     <data>
         <report
-            id="return_stock_report"
+            id="return_stock_report_amc"
             model="return.stock.request"
-            string="Return Stock Report"
+            string="Return Stock Report (AMC)"
             report_type="qweb-pdf"
-            name="ibas_return_stock_report.report_return_stock"
-            file="ibas_return_stock_report.report_return_stock"
+            name="ibas_return_stock_report.report_return_stock_amc"
+            file="ibas_return_stock_report.report_return_stock_amc"
+            attachment_use="True"
+        />
+
+        <report
+            id="return_stock_report_cmc"
+            model="return.stock.request"
+            string="Return Stock Report (CMC)"
+            report_type="qweb-pdf"
+            name="ibas_return_stock_report.report_return_stock_cmc"
+            file="ibas_return_stock_report.report_return_stock_cmc"
             attachment_use="True"
         />
     </data>
